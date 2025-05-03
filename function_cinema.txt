@@ -1,0 +1,116 @@
+-- insert
+create or replace function insert_cinema(in cineID int, in nm varchar(30), in loca varchar(30)) returns void as
+$$
+begin
+	insert into cinema(cinema_id, name, location) values (cineID, nm, loca);
+end;
+$$ language plpgsql;
+
+create or replace function insert_schedule(in sheID int, in sch_date date, in sch_start varchar(10), in rmID int, in mvID int) returns void as
+$$
+begin
+	insert into schedule(schedule_id, schedule_movie_date, schedule_movie_start, room_id, movie_id) values (sheID, sch_date, sch_start, rmID, mvID);
+end;
+$$ language plpgsql;
+
+create or replace function insert_cast(in cID int, in mvID int, in cha varchar(50), in gen varchar(10), in nm varchar(50), in ord int) returns void as
+$$
+begin
+	insert into "cast"(id_cast, movie_id, character, gender, name, "order") values (cID, mvID, cha, gen, nm, ord);
+end;
+$$ language plpgsql;
+
+create or replace function insert_crew(in cID varchar(50), in mvID int, in dep varchar(30), in gen int,in jo varchar(30), in nm varchar(30)) returns void as
+$$
+begin
+	insert into crew(id_crew, movie_id, department, gender, job, name) values (cID, mvID, dep, gen, jo, nm);
+end;
+$$ language plpgsql;
+
+create or replace function insert_discount(in disID varchar(30), in vl int, in date_s date, in date_x date, in cusID int) returns void as
+$$
+begin
+	insert into discount(discount_id, value, date_start, date_expire, customer_id) values (disID, vl, date_s, date_x, cusID);
+end;
+$$ language plpgsql;
+
+create or replace function insert_genre(in genID int, in nm varchar(40)) returns void as 
+$$
+begin
+	insert into insert_genre(id_genre, name)  values (genID, nm);
+end;
+$$ language plpgsql;
+
+create or replace function insert_movie(in mvID int, in tit varchar(100), in ovv text, in lang varchar(10), in redate date, in runtime int, in sta varchar(10), in tag text, in url text, in age int) returns void as
+$$
+begin
+	insert into movie(movie_id, title, overview, original_language, release_date, runtime, status, url, ageres) values (mvID, tit, ovv, lang, redate, runtime, sta, tag, url, age);
+end;
+$$ language plpgsql;
+
+create or replace function insert_product(in prodid int, in nm varchar(30), in des varchar(300), in price int, in cate varchar(30)) returns void as
+$$
+begin
+	insert into product(product_id, name, description, price, category) values (prodid, nm, des, price, cate);
+end;
+$$ language plpgsql;
+
+create or replace function insert_room(in rmID int, in cineID int, in name varchar(10), in type varchar(10), in price int) returns void as
+$$
+begin
+	insert into room(room_id, cinema_id, name, type, price) values (rmID, cineID, name,type, price);
+end;
+$$ language plpgsql;
+
+create or replace function insert_seat(in seatid varchar(7),in roomid int, in rw varchar(1), in cl int) returns void as
+$$
+begin
+	insert into seat(seat_id, room_id, row, col) values (seatid, roomid, rw, cl);
+end;	
+$$ language plpgsql;
+
+
+create or replace function insert_staff(in staffid int, in name varchar(30), in email varchar(30), in birth varchar(30), in role varchar(30), in cinemaid int) returns void as
+$$
+begin
+	insert into staff(staff_id, name, email, birth, role, cinema_id) values (staffid, name, email, birth, role, cinemaid);
+end;
+$$ language plpgsql;
+
+
+create or replace function insert_ticket(in ticketid int, in userid int, in scheduleid int, in roomid int, in totalmoney int, in discountid varchar(30),in feedback text, in staffid int) returns void as
+$$
+begin
+	insert into ticket(ticket_id, user_id, schedule_id, room_id, total_money, discount_id, feedback, staff_id) values (ticketid, scheduleid, roomid, totalmoney, discountid, feedback, staffid);
+end;
+$$ language plpgsql;
+
+
+create or replace function insert_users(in userid int, in firstname varchar(30), in lastname varchar(30), in address varchar(80), in city varchar(40), in email varchar(50), in phone varchar(12), in username varchar(30), in password varchar(30), in totalamount int) returns void as
+$$
+begin
+	insert into users(user_id, first_name, last_name, address, city, email, phone, username, password, total_amount) values (userid, firstname, lastname, address, city, email, phone, username, password, totalamount);
+end;
+$$ language plpgsql;
+
+create or replace function insert_movie_join_genre(in movieid int, in idgen int) returns void as
+$$
+begin
+	insert into movie_join_genre(movie_id, id_genre) values (movieid, idgen);
+end;
+$$ language plpgsql;
+
+
+create or replace function insert_product_detail(in ticketid int, in prodid int, in quantity int, in price int) returns void as
+$$
+begin
+	insert into product_detail(ticket_id, product_id, quantity, unit_price) values (ticketid, prodid, quantity, price);
+end;
+$$ language plpgsql;
+
+create or replace function insert_seat_detail(in ticketid int, in seatid varchar(7), in price int) returns void as
+$$
+begin
+	insert into seat_detail(ticket_id, seat_id, price) values (ticketid, seatid, price);
+end;
+$$ language plpgsql;

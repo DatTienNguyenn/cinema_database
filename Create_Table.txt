@@ -1,0 +1,146 @@
+CREATE TABLE users(
+	user_id int PRIMARY KEY,
+	username VARCHAR(30),
+	email VARCHAR(30),
+	birth DATE,
+	password VARCHAR(30),
+	phone VARCHAR(10),
+	total_amount int
+)
+
+CREATE TABLE cinema (
+	cinema_id SERIAL PRIMARY KEY,
+	name VARCHAR(30),
+	location VARCHAR(30)
+)
+
+CREATE TABLE movie (
+	movie_id SERIAL PRIMARY KEY,
+	title VARCHAR(30),
+	overview TEXT,
+	original_language VARCHAR(30),
+	ageRes INTEGER,
+	release DATE,
+	status VARCHAR(30),
+	tagline TEXT,
+	length INTEGER,
+	url TEXT
+)
+
+
+CREATE TABLE schedule (
+	schedule_id INTEGER PRIMARY KEY,
+	schedule_movie_date DATE,
+	schedule_movie_start TIME,
+	movie_id INTEGER,
+	room_id VARCHAR(10),
+	CONSTRAINT fk_movie_id FOREIGN KEY (movie_id) REFERENCES movie(movie_id),
+	CONSTRAINT fk_room_id FOREIGN KEY (room_id) REFERENCES room(room_id)
+)
+
+CREATE TABLE room (
+	room_id VARCHAR(10) PRIMARY KEY,
+	cinema_id INTEGER,
+	type VARCHAR(10),
+	price INTEGER,
+	CONSTRAINT fk_cinema_id FOREIGN KEY (cinema_id) REFERENCES cinema(cinema_id)
+)
+
+CREATE TABLE discount (
+	discount_id VARCHAR(30) PRIMARY KEY,
+	value int,
+	date_start date,
+	date_expire date,
+	customer_id int,
+	CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES users(user_id)
+)
+
+CREATE TABLE product (
+	product_id INTEGER PRIMARY KEY,
+	name VARCHAR(30),
+	description VARCHAR(30),
+	price MONEY,
+	category VARCHAR(30)
+)
+
+CREATE TABLE staff(
+	staff_id INTEGER PRIMARY KEY,
+	name VARCHAR(30),
+	email VARCHAR(30),
+	birth VARCHAR(30),
+	role VARCHAR(30),
+	cinema_id INTEGER,
+	CONSTRAINT fk_cinema_id FOREIGN KEY (cinema_id) REFERENCES cinema(cinema_id)
+)
+
+CREATE TABLE ticket (
+	ticket_id INTEGER PRIMARY KEY,
+	user_id INTEGER,	
+	schedule_id INTEGER,
+	room_id VARCHAR(10),
+	total_money INTEGER,
+	discount_id VARCHAR(30),
+	feedback VARCHAR(300),
+	staff_id INTEGER,
+	CONSTRAINT fk_staff_id FOREIGN KEY (staff_id) REFERENCES staff(staff_id),
+	CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),
+	CONSTRAINT fk_schedule_id FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id),
+	CONSTRAINT fk_room_id FOREIGN KEY (room_id) REFERENCES room(room_id),
+	CONSTRAINT fk_discount_id FOREIGN KEY (discount_id) REFERENCES discount(discount_id)
+)
+
+CREATE TABLE product_detail(
+	ticket_id INTEGER,
+	product_id INTEGER,
+	quantity INTEGER,
+	unit_price VARCHAR(10),
+	CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES product(product_id),
+	CONSTRAINT fk_ticket_id FOREIGN KEY (ticket_id) REFERENCES ticket(ticket_id)
+)
+
+CREATE TABLE seat (
+	seat_id INTEGER PRIMARY KEY,
+	room_id VARCHAR(10),
+	row INTEGER,
+	col INTEGER,
+	CONSTRAINT fk_room_id FOREIGN KEY (room_id) REFERENCES room(room_id)
+)
+
+CREATE TABLE seat_detail (
+	ticket_id INTEGER,
+	seat_id INTEGER,
+	price INTEGER,
+	CONSTRAINT fk_ticket_id FOREIGN KEY (ticket_id) REFERENCES ticket(ticket_id),
+	CONSTRAINT fk_seat_id FOREIGN KEY (seat_id) REFERENCES seat(seat_id)
+)
+
+CREATE TABLE genre (
+	id_genre SERIAL PRIMARY KEY,
+	name VARCHAR(30)
+)
+
+CREATE TABLE movie_join_genre (
+	movie_id INTEGER,
+	id_genre INTEGER,
+	CONSTRAINT fk_id_genre FOREIGN KEY (id_genre) REFERENCES genre(id_genre)
+)
+
+CREATE TABLE crew (
+	id_crew VARCHAR(10),
+	movie_id integer,
+	department VARCHAR(30),
+	gender VARCHAR(10),
+	job VARCHAR(30),
+	names VARCHAR(30),
+	CONSTRAINT fk_movie_id FOREIGN KEY (movie_id) REFERENCES movie(movie_id)
+)
+
+CREATE TABLE casts (
+	id_cast VARCHAR(10),
+	movie_id INTEGER,
+	character VARCHAR(30),
+	gender VARCHAR(10),
+	name VARCHAR(30),
+	orders INTEGER,
+	CONSTRAINT fk_movie_id FOREIGN KEY (movie_id) REFERENCES movie(movie_id)
+)
